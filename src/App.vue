@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app :style="{background: $vuetify.theme.themes[theme].background}">
         <v-app-bar
             app
             color="primary"
@@ -51,15 +51,19 @@ export default {
     components: {
         HelloWorld,
     },
-    mounted() {
-        this.$nextTick(() => {
-            if (parent['iframeLoaded'])
-                parent.iframeLoaded(document.getElementsByTagName('html')[0].scrollHeight + 100);
-        })
-    },
-
     data: () => ({
         //
     }),
+    mounted() {
+        this.$nextTick(() => {
+            if (parent['iframeLoaded']) parent.iframeLoaded(document.getElementsByTagName('html')[0].scrollHeight + 10);
+            if (parent['setMPTheme']) parent.setMPTheme();
+        })
+    },
+    computed:{
+        theme(){
+            return (this.$vuetify.theme.dark) ? 'dark' : 'light'
+        }
+    }
 };
 </script>

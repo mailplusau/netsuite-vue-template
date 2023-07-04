@@ -33,7 +33,6 @@ define(moduleNames.map(item => 'N/' + item), (...args) => {
             })
                 .then(res => res.json())
                 .then(jsonData => {
-                    console.log(jsonData);
                     let iFrameID = document.getElementById('mainContentIframe');
                     iFrameID.srcdoc = jsonData;
                 })
@@ -55,8 +54,31 @@ function iframeLoaded(height) {
     let iFrameID = document.getElementById('mainContentIframe');
     if(iFrameID) {
         // here you can make the height, I delete it first, then I make it again
-        let targetHeight = iFrameID.contentWindow.document.body.scrollHeight + 100;
+        let targetHeight = iFrameID.contentWindow.document.body.scrollHeight + 10;
         iFrameID.height = "";
         iFrameID.height = height || targetHeight + "px";
     }
+}
+
+function setMPTheme() {
+    let styles = `
+        div#body {
+            background-color: #cfe0ce !important;
+        }
+        
+        ul#NS_MENU_ID0, ul#NS_MENU_ID0 > .ns-menuitem > a {
+            background-color: #cfe0ce !important;
+        }
+        
+        ul.pagination.b-pagination, ul.nav.nav-tabs {
+            display: flex !important;
+            padding-left: 0 !important;
+            list-style: none !important;
+            margin: 0 !important;
+        }
+    `
+
+    let styleSheet = document.createElement("style")
+    styleSheet.innerText = styles
+    document.head.appendChild(styleSheet)
 }
