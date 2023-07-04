@@ -82,3 +82,7 @@ function setMPTheme() {
     styleSheet.innerText = styles
     document.head.appendChild(styleSheet)
 }
+
+function getCurrentNetSuiteUrl() {
+    return location.href
+}

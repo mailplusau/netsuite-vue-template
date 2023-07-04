@@ -2,8 +2,9 @@ import superagent from "superagent";
 import store from "@/store";
 
 function _getURL() {
-    let baseUrl = window.location.href.split('?')[0];
-    const params = new Proxy(new URLSearchParams(window.location.search), {
+    let currentUrl = parent['getCurrentNetSuiteUrl'] ? parent.getCurrentNetSuiteUrl() : window.location.href;
+    let [baseUrl, queryString] = currentUrl.split('?');
+    const params = new Proxy(new URLSearchParams(`?${queryString}`), {
         get: (searchParams, prop) => searchParams.get(prop),
     });
 
