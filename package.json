@@ -5,19 +5,19 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "postbuild": "node netsuite.upload.js",
-    "lint": "vue-cli-service lint"
-  },
-  "netsuite": {
-    "htmlFile": "mp_cl_test_page_tn_v2_vue.html"
+    "lint": "vue-cli-service lint",
+    "postbuild": "node netsuite.upload.js"
   },
   "dependencies": {
+    "@mdi/font": "5.9.55",
     "axios": "^1.3.5",
     "bootstrap": "^5.2.3",
     "bootstrap-vue": "^2.23.1",
     "core-js": "^3.6.5",
+    "roboto-fontface": "*",
     "vee-validate": "2.1.7",
     "vue": "^2.6.11",
+    "vuetify": "^2.6.0",
     "vuex": "^3.4.0",
     "webpack": "^4.46.0"
   },
@@ -38,6 +38,12 @@
     "sass": "^1.59.2",
     "sass-loader": "^10.4.1",
     "superagent": "^5.1.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-cli-plugin-vuetify": "^2.5.8",
+    "vue-template-compiler": "^2.6.11",
+    "vuetify-loader": "^1.7.0",
+    "base64-inline-loader": "^2.0.1"
+  },
+  "netsuite": {
+    "htmlFile": "mp_cl_test_page_tn_v2_vue.html"
   }
 }

@@ -1,25 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-import VeeValidate from "vee-validate"
+import vuetify from './plugins/vuetify'
+import 'roboto-fontface/css/roboto/roboto-fontface.css'
+import '@mdi/font/css/materialdesignicons.css'
 
-// Import Bootstrap and BootstrapVue CSS files (order is important)
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-
-import './styles/custom.scss'
-
-// Make BootstrapVue available throughout your project
-Vue.use(BootstrapVue)
-// Optionally install the BootstrapVue icon components plugin
-Vue.use(IconsPlugin)
-
-Vue.use(VeeValidate);
-
-Vue.config.productionTip = false
 
 new Vue({
   store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')

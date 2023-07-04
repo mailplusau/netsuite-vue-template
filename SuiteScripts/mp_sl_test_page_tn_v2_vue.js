@@ -44,7 +44,7 @@ define(['N/ui/serverWidget', 'N/render', 'N/search', 'N/file', 'N/log', 'N/recor
 
 // Render the page within a form element of NetSuite. This can cause conflict with NetSuite's stylesheets.
 function _getInlineForm(response) {
-    let {serverWidget, render, file} = NS_MODULES;
+    let {serverWidget} = NS_MODULES;
     
     // Create a NetSuite form
     let form = serverWidget.createForm({ title: defaultTitle });
@@ -55,12 +55,8 @@ function _getInlineForm(response) {
         label: "html",
         type: serverWidget.FieldType.INLINEHTML,
     });
-    
-    const pageRenderer = render.create();
-    const htmlFileData = _getHtmlTemplate(htmlTemplateFile);
-    const htmlFile = file.load({ id: htmlFileData[htmlTemplateFile].id });
-    pageRenderer.templateContent = htmlFile.getContents();
-    htmlField.defaultValue = pageRenderer.renderAsString();
+
+    htmlField.defaultValue = `<iframe id="mainContentIframe" scrolling="no" style="width: 100%; border: none; overflow: hidden;" onload="iframeLoaded()" srcdoc=""></iframe>`;
 
     // Retrieve client script ID using its file name.
     form.clientScriptFileId = _getHtmlTemplate(clientScriptFilename)[clientScriptFilename].id;
@@ -158,7 +154,14 @@ function _writeResponseJson(response, body) {
 }
 
 const getOperations = {
+    'getIframeContents' : function (response) {
+        let {file} = NS_MODULES;
 
+        const htmlFileData = _getHtmlTemplate(htmlTemplateFile);
+        const htmlFile = file.load({ id: htmlFileData[htmlTemplateFile].id });
+
+        _writeResponseJson(response, htmlFile.getContents());
+    }
 }
 
 const postOperations = {
