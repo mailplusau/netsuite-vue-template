@@ -18,7 +18,7 @@ define(moduleNames.map(item => 'N/' + item), (...args) => {
         function pageInit() {
             console.log('Client script init.');
 
-            let baseUrl = window.location.href.split('?')[0];
+            let baseUrl = getCurrentNetSuiteUrl().split('?')[0];
             const params = new Proxy(new URLSearchParams(window.location.search), {
                 get: (searchParams, prop) => searchParams.get(prop),
             });
@@ -33,8 +33,13 @@ define(moduleNames.map(item => 'N/' + item), (...args) => {
             })
                 .then(res => res.json())
                 .then(jsonData => {
-                    let iFrameID = document.getElementById('mainContentIframe');
-                    iFrameID.srcdoc = jsonData;
+                    let iframe = document.createElement('iframe');
+                    iframe.id = 'body';
+                    iframe.srcdoc = jsonData;
+                    iframe.style.setProperty('border', 'none');
+                    document.querySelector('div#body').parentNode.insertBefore(iframe, null);
+                    document.querySelector('div#body').remove();
+                    setMPTheme();
                 })
                 .catch(err => {
                     console.log(err);
@@ -50,37 +55,8 @@ function _getClientModules() {
     return modules;
 }
 
-function iframeLoaded(height) {
-    let iFrameID = document.getElementById('mainContentIframe');
-    if(iFrameID) {
-        // here you can make the height, I delete it first, then I make it again
-        let targetHeight = iFrameID.contentWindow.document.body.scrollHeight + 10;
-        iFrameID.height = "";
-        iFrameID.height = height || targetHeight + "px";
-    }
-}
-
-function setMPTheme() {
-    let styles = `
-        div#body {
-            background-color: #cfe0ce !important;
-        }
-        
-        ul#NS_MENU_ID0, ul#NS_MENU_ID0 > .ns-menuitem > a {
-            background-color: #cfe0ce !important;
-        }
-        
-        ul.pagination.b-pagination, ul.nav.nav-tabs {
-            display: flex !important;
-            padding-left: 0 !important;
-            list-style: none !important;
-            margin: 0 !important;
-        }
-    `
-
-    let styleSheet = document.createElement("style")
-    styleSheet.innerText = styles
-    document.head.appendChild(styleSheet)
+function setMPTheme(pageTitle = '') {
+    if (pageTitle) document.title = pageTitle;
 }
 
 function getCurrentNetSuiteUrl() {

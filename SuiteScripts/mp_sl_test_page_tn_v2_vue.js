@@ -9,7 +9,7 @@
 // This should be the same file as the one built by webpack. Make sure this matches the filename in package.json
 let htmlTemplateFile = 'mp_cl_test_page_tn_v2_vue.html';
 const clientScriptFilename = 'mp_cl_test_page_tn_v2_vue.js';
-const defaultTitle = 'Test Page';
+const defaultTitle = 'Loading page. Please wait...';
 
 let NS_MODULES = {};
 
@@ -48,15 +48,6 @@ function _getInlineForm(response) {
     
     // Create a NetSuite form
     let form = serverWidget.createForm({ title: defaultTitle });
-
-    // Then create form field in which we will render our html template
-    let htmlField = form.addField({
-        id: "custpage_html",
-        label: "html",
-        type: serverWidget.FieldType.INLINEHTML,
-    });
-
-    htmlField.defaultValue = `<iframe id="mainContentIframe" scrolling="no" style="width: 100%; border: none; overflow: hidden;" onload="iframeLoaded()" srcdoc=""></iframe>`;
 
     // Retrieve client script ID using its file name.
     form.clientScriptFileId = _getHtmlTemplate(clientScriptFilename)[clientScriptFilename].id;

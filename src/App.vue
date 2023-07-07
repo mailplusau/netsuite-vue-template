@@ -54,12 +54,6 @@ export default {
     data: () => ({
         //
     }),
-    mounted() {
-        this.$nextTick(() => {
-            if (parent['iframeLoaded']) parent.iframeLoaded(document.getElementsByTagName('html')[0].scrollHeight + 10);
-            if (parent['setMPTheme']) parent.setMPTheme();
-        })
-    },
     computed:{
         theme(){
             return (this.$vuetify.theme.dark) ? 'dark' : 'light'
