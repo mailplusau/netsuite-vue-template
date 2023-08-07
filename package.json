@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "postbuild": "node netsuite.upload.js"
+    "postbuild": "node netsuite.upload.mjs"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
@@ -19,10 +19,13 @@
     "vuex": "^3.4.0",
     "webpack": "^4.46.0"
   },
+  "netsuite": {
+    "htmlFile": "mp_cl_test_page_tn_v2_vue.html"
+  },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.5",
     "@vue/cli-plugin-eslint": "^4.0.5",
-    "@vue/cli-plugin-vuex": "^4.0.5",
+    "@vue/cli-plugin-vuex": "^5.0.8",
     "@vue/cli-service": "^4.0.5",
     "babel-eslint": "^10.1.0",
     "base64-inline-loader": "^2.0.1",
@@ -34,14 +37,12 @@
     "html-webpack-inline-source-plugin": "1.0.0-beta.2",
     "html-webpack-plugin": "4.0.0-beta.4",
     "oauth-1.0a": "^2.2.6",
-    "sass": "~1.59.2",
-    "sass-loader": "^10.4.1",
+    "parse-imports": "^1.1.2",
+    "sass": "~1.32.0",
+    "sass-loader": "^10.0.0",
     "superagent": "^5.1.0",
     "vue-cli-plugin-vuetify": "^2.5.8",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.7.0"
-  },
-  "netsuite": {
-    "htmlFile": "mp_cl_test_page_tn_v2_vue.html"
   }
 }

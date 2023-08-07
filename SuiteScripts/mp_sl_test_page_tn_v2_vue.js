@@ -9,7 +9,7 @@
 // This should be the same file as the one built by webpack. Make sure this matches the filename in package.json
 let htmlTemplateFile = 'mp_cl_test_page_tn_v2_vue.html';
 const clientScriptFilename = 'mp_cl_test_page_tn_v2_vue.js';
-const defaultTitle = 'Loading page. Please wait...';
+const defaultTitle = 'Test Page VUE';
 
 let NS_MODULES = {};
 
@@ -55,30 +55,6 @@ function _getInlineForm(response) {
     response.writePage(form);
 }
 
-// Render the htmlTemplateFile as a standalone page without any of NetSuite's baggage. However, this also means no
-// NetSuite module will be exposed to the Vue app. Thus, an api approach using Axios and structuring this Suitelet as
-// a http request handler will be necessary. For reference:
-// https://medium.com/@vladimir.aca/how-to-vuetify-your-suitelet-on-netsuite-part-2-axios-http-3e8e731ac07c
-function _getStandalonePage(response) {
-    let {render, file} = NS_MODULES;
-
-    // Create renderer to render our html template
-    const pageRenderer = render.create();
-
-    // Get the id and url of our html template file
-    const htmlFileData = _getHtmlTemplate(htmlTemplateFile);
-
-    // Load the  html file and store it in htmlFile
-    const htmlFile = file.load({
-        id: htmlFileData[htmlTemplateFile].id
-    });
-
-    // Load the content of the html file into the renderer
-    pageRenderer.templateContent = htmlFile.getContents();
-
-    response.write(pageRenderer.renderAsString());
-}
-
 // Search for the ID and URL of a given file name inside the NetSuite file cabinet
 function _getHtmlTemplate(htmlPageName) {
     let {search} = NS_MODULES;
@@ -111,9 +87,9 @@ function _handleGETRequests(request, response) {
 
         if (!operation) throw 'No operation specified.';
 
-        if (!getOperations[operation]) throw `Operation [${operation}] is not supported.`;
-
-        getOperations[operation](response, requestParams);
+        if (operation === 'getIframeContents') _getIframeContents(response);
+        else if (!getOperations[operation]) throw `GET operation [${operation}] is not supported.`;
+        else getOperations[operation](response, requestParams);
     } catch (e) {
         log.debug({title: "_handleGETRequests", details: `error: ${e}`});
         _writeResponseJson(response, {error: `${e}`})
@@ -144,37 +120,17 @@ function _writeResponseJson(response, body) {
     });
 }
 
+function _getIframeContents(response) {
+    const htmlFileData = _getHtmlTemplate(htmlTemplateFile);
+    const htmlFile = NS_MODULES.file.load({ id: htmlFileData[htmlTemplateFile].id });
+
+    _writeResponseJson(response, htmlFile.getContents());
+}
+
 const getOperations = {
-    'getIframeContents' : function (response) {
-        let {file} = NS_MODULES;
 
-        const htmlFileData = _getHtmlTemplate(htmlTemplateFile);
-        const htmlFile = file.load({ id: htmlFileData[htmlTemplateFile].id });
-
-        _writeResponseJson(response, htmlFile.getContents());
-    }
 }
 
 const postOperations = {
 
 };
-
-function _parseIsoDatetime(dateString) {
-    let dt = dateString.split(/[: T-]/).map(parseFloat);
-    return new Date(dt[0], dt[1] - 1, dt[2], dt[3] || 0, dt[4] || 0, dt[5] || 0, 0);
-}
-
-function _parseISODate(dateString) {
-    let dt = dateString.split(/[: T-]/).map(parseFloat);
-    return new Date(dt[0], dt[1] - 1, dt[2]);
-}
-
-function _getLocalTimeFromOffset(localUTCOffset) {
-    let today = new Date();
-    let serverUTCOffset = today.getTimezoneOffset();
-
-    let localTime = new Date();
-    localTime.setTime(today.getTime() + (serverUTCOffset - parseInt(localUTCOffset)) * 60 * 1000);
-
-    return localTime;
-}
