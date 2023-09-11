@@ -1,3 +1,7 @@
+
+export const VARS = {
+    pageTitle: 'Template Page'
+}
 export function debounce(fn, wait){
     let timer;
     return function(...args){

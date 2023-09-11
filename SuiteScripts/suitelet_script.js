@@ -6,11 +6,13 @@
  * @created 27/06/2023
  */
 
+import {VARS} from '@/utils/utils.mjs';
+
 // These variables will be injected during upload. These can be changed under 'netsuite' of package.json
 let htmlTemplateFilename/**/;
 let clientScriptFilename/**/;
 
-const defaultTitle = 'Test Page VUE';
+const defaultTitle = VARS.pageTitle;
 
 let NS_MODULES = {};
 

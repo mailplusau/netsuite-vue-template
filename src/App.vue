@@ -5,7 +5,7 @@
                 <v-row class="mx-1" justify="space-between" align="center">
                     <v-col cols="auto">
                         <h1 class="primary--text">
-                            Test Page
+                            {{ pageTitle }}
                         </h1>
                     </v-col>
 
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import {VARS} from '@/utils/utils.mjs';
 import GlobalNotificationModal from "@/components/GlobalNotificationModal";
 
 export default {
@@ -40,8 +41,11 @@ export default {
         GlobalNotificationModal,
     },
     computed:{
-        theme(){
+        theme() {
             return (this.$vuetify.theme.dark) ? 'dark' : 'light'
+        },
+        pageTitle() {
+            return VARS.pageTitle;
         }
     }
 };
