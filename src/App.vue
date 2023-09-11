@@ -40,6 +40,9 @@ export default {
     components: {
         GlobalNotificationModal,
     },
+    beforeCreate() {
+        this.$store.dispatch('init');
+    },
     computed:{
         theme() {
             return (this.$vuetify.theme.dark) ? 'dark' : 'light'
