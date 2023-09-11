@@ -62,6 +62,11 @@ const actions = {
 
         console.log('Ready');
     },
+    handleException : (context, {title, message}) => {
+        context.commit('displayErrorGlobalModal', {
+            title, message
+        })
+    },
 };
 
 function _checkNetSuiteEnv() {
