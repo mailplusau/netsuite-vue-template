@@ -27,7 +27,7 @@ module.exports = {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        filename: packageJson.netsuite.htmlFile,
+        filename: packageJson.netsuite['htmlFilename'] || `mp_cl_${packageJson.netsuite.projectName}_${packageJson.netsuite.suffixName}.html`,
         template: 'public/index.html',  //template file to embed the source
         inlineSource: '.(js|css)$' // embed all javascript and css inline
       }),

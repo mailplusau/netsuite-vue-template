@@ -6,7 +6,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "postbuild": "node netsuite.upload.mjs"
+    "postbuild": "node netsuite.upload.mjs",
+    "upload-suitelet": "node netsuite.upload.mjs SuiteScripts\\suitelet_script.js resolve:env resolve:imports resolve:filenames",
+    "upload-client": "node netsuite.upload.mjs SuiteScripts\\client_script.js resolve:env resolve:imports resolve:filenames"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
@@ -20,7 +22,8 @@
     "webpack": "^4.46.0"
   },
   "netsuite": {
-    "htmlFile": "mp_cl_test_page_tn_v2_vue.html"
+    "projectName": "test_page",
+    "suffixName": "tn_v2_vue"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.5",

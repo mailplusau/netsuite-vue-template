@@ -290,9 +290,28 @@ function replaceBetween(original, start, end, what) {
     return original.substring(0, start) + what + original.substring(end);
 }
 
+function resolveFilename(filePath, fileContent) {
+    let suiteletFilename = packageJson.netsuite['suiteletFilename']
+        || `mp_sl_${packageJson.netsuite.projectName}_${packageJson.netsuite.suffixName}.js`;
+    let clientFilename = packageJson.netsuite['clientFilename']
+        || `mp_cl_${packageJson.netsuite.projectName}_${packageJson.netsuite.suffixName}.js`;
+
+    filePath = filePath.replace('suitelet_script.js', suiteletFilename);
+    filePath = filePath.replace('client_script.js', clientFilename);
+
+    fileContent = fileContent.replace('let htmlTemplateFilename/**/;', `let htmlTemplateFilename = '${getHtmlFilename()}';`)
+    fileContent = fileContent.replace('let clientScriptFilename/**/;', `let clientScriptFilename = '${clientFilename}';`)
+
+    return {filePath, fileContent};
+}
+
+function getHtmlFilename() {
+    return packageJson.netsuite['htmlFilename'] || `mp_cl_${packageJson.netsuite.projectName}_${packageJson.netsuite.suffixName}.html`
+}
+
 (async () => {
     let filePath;
-    if (!process.argv[2]) filePath = path.resolve(__dirname, 'dist/' + packageJson.netsuite.htmlFile);
+    if (!process.argv[2]) filePath = path.resolve(__dirname, 'dist/' + getHtmlFilename());
     else filePath = path.resolve(__dirname, process.argv[2]);
 
     if (fs.existsSync(filePath)) {
@@ -303,6 +322,12 @@ function replaceBetween(original, start, end, what) {
 
         if (process.argv.includes('resolve:imports'))
             fileContent = await injectImportStatements(fileContent);
+
+        if (process.argv.includes('resolve:filenames')) {
+            let tmp = resolveFilename(filePath, fileContent);
+            filePath = tmp.filePath;
+            fileContent = tmp.fileContent;
+        }
 
         postFile(filePath, fileContent, function (err, res) {
             console.log('Uploading file ' + filePath + ' to NetSuite cabinet...');

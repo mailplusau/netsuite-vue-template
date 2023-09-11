@@ -6,9 +6,10 @@
  * @created 27/06/2023
  */
 
-// This should be the same file as the one built by webpack. Make sure this matches the filename in package.json
-let htmlTemplateFile = 'mp_cl_test_page_tn_v2_vue.html';
-const clientScriptFilename = 'mp_cl_test_page_tn_v2_vue.js';
+// These variables will be injected during upload. These can be changed under 'netsuite' of package.json
+let htmlTemplateFilename/**/;
+let clientScriptFilename/**/;
+
 const defaultTitle = 'Test Page VUE';
 
 let NS_MODULES = {};
@@ -121,8 +122,8 @@ function _writeResponseJson(response, body) {
 }
 
 function _getIframeContents(response) {
-    const htmlFileData = _getHtmlTemplate(htmlTemplateFile);
-    const htmlFile = NS_MODULES.file.load({ id: htmlFileData[htmlTemplateFile].id });
+    const htmlFileData = _getHtmlTemplate(htmlTemplateFilename);
+    const htmlFile = NS_MODULES.file.load({ id: htmlFileData[htmlTemplateFilename].id });
 
     _writeResponseJson(response, htmlFile.getContents());
 }

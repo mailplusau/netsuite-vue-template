@@ -14,6 +14,17 @@
                     </v-col>
                 </v-row>
             </v-container>
+
+            <v-divider class="mb-3"></v-divider>
+
+            <v-container>
+                <v-row justify="center">
+                    <v-col xl="9" lg="11" cols="12">
+                        Contents
+                    </v-col>
+                </v-row>
+            </v-container>
+
         </v-main>
 
         <GlobalNotificationModal />
