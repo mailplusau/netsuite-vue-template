@@ -1,6 +1,13 @@
 import superagent from "superagent";
 import store from "@/store";
 
+/**
+ * @param {Object} options - An object containing various options.
+ * @param {string} options.script - The name of the employee.
+ * @param {string} options.deploy - The name of the employee.
+ * @returns {{essentialParams: {script: string, deploy: string}, baseUrl: string, postEndpoint: string}}
+ * @private
+ */
 function _getURL(options) {
     let currentUrl = parent['getCurrentNetSuiteUrl'] ? parent.getCurrentNetSuiteUrl() : window.location.href;
     let [baseUrl, queryString] = currentUrl.split('?');
@@ -15,6 +22,14 @@ function _getURL(options) {
 }
 
 export default {
+    /**
+     * @param {string} operation - The name of the method to call
+     * @param {Object} requestParams - An object containing parameters for the method
+     * @param {Object} options - An object containing various options.
+     * @param {string} options.script - The name of the employee.
+     * @param {string} options.deploy - The name of the employee.
+     * @param {boolean} options.noErrorPopup - The name of the employee.
+     */
     async get(operation, requestParams, options) {
         let {baseUrl, essentialParams} = _getURL(options);
 
@@ -22,9 +37,17 @@ export default {
             superagent.get(baseUrl)
                 .set("Content-Type", "application/json")
                 .query({...essentialParams, requestData: JSON.stringify({operation, requestParams})})
-                .end((err, res) => { _handle(err, res, reject, resolve); });
+                .end((err, res) => { _handle(err, res, reject, resolve, options?.noErrorPopup); });
         });
     },
+    /**
+     * @param {string} operation - The name of the method to call
+     * @param {Object} requestParams - An object containing parameters for the method
+     * @param {Object} options - An object containing various options.
+     * @param {string} options.script - The name of the employee.
+     * @param {string} options.deploy - The name of the employee.
+     * @param {boolean} options.noErrorPopup - The name of the employee.
+     */
     async post(operation, requestParams, options) {
         let {postEndpoint} = _getURL(options);
 
@@ -33,16 +56,26 @@ export default {
                 .set("Content-Type", "application/json")
                 .set("Accept", "json")
                 .send({operation, requestParams})
-                .end((err, res) => { _handle(err, res, reject, resolve); });
+                .end((err, res) => { _handle(err, res, reject, resolve, options?.noErrorPopup); });
         });
     }
 }
 
-function _handle(err, res, reject, resolve) {
+/**
+ * @param err
+ * @param res
+ * @param reject
+ * @param resolve
+ * @param {boolean} noErrorPopup
+ * @private
+ */
+function _handle(err, res, reject, resolve, noErrorPopup = false) {
     let errorMessage = err || (res.body?.error || null);
 
     if (errorMessage) {
-        store.dispatch('handleException', {title: 'An error occurred', message: errorMessage}, {root: true}).then();
+        if (!noErrorPopup) store.dispatch('handleException',
+            {title: 'An error occurred', message: errorMessage}, {root: true}).then();
+
         reject(errorMessage);
     } else resolve(res.body);
 }
