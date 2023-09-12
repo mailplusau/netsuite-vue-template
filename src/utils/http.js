@@ -3,8 +3,8 @@ import store from "@/store";
 
 /**
  * @param {Object} options - An object containing various options.
- * @param {string} options.script - The name of the employee.
- * @param {string} options.deploy - The name of the employee.
+ * @param {string} options.script - The NetSuite ID of the script record.
+ * @param {string} options.deploy - The NetSuite ID of the deployment record.
  * @returns {{essentialParams: {script: string, deploy: string}, baseUrl: string, postEndpoint: string}}
  * @private
  */
@@ -26,9 +26,9 @@ export default {
      * @param {string} operation - The name of the method to call
      * @param {Object} requestParams - An object containing parameters for the method
      * @param {Object} options - An object containing various options.
-     * @param {string} options.script - The name of the employee.
-     * @param {string} options.deploy - The name of the employee.
-     * @param {boolean} options.noErrorPopup - The name of the employee.
+     * @param {string} options.script - The NetSuite ID of the script record.
+     * @param {string} options.deploy - The NetSuite ID of the deployment record.
+     * @param {boolean} options.noErrorPopup - A flag that stops error from being displayed in a popup.
      */
     async get(operation, requestParams, options) {
         let {baseUrl, essentialParams} = _getURL(options);
@@ -44,9 +44,9 @@ export default {
      * @param {string} operation - The name of the method to call
      * @param {Object} requestParams - An object containing parameters for the method
      * @param {Object} options - An object containing various options.
-     * @param {string} options.script - The name of the employee.
-     * @param {string} options.deploy - The name of the employee.
-     * @param {boolean} options.noErrorPopup - The name of the employee.
+     * @param {string} options.script - The NetSuite ID of the script record.
+     * @param {string} options.deploy - The NetSuite ID of the deployment record.
+     * @param {boolean} options.noErrorPopup - A flag that stops error from being displayed in a popup.
      */
     async post(operation, requestParams, options) {
         let {postEndpoint} = _getURL(options);
