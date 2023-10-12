@@ -24,7 +24,7 @@ function _getURL(options) {
 export default {
     /**
      * @param {string} operation - The name of the method to call
-     * @param {Object} requestParams - An object containing parameters for the method
+     * @param {Object} [requestParams] - An object containing parameters for the method
      * @param {Object} [options={}] - An object containing various options.
      * @param {string} [options.script] - The NetSuite ID of the script record.
      * @param {string} [options.deploy] - The NetSuite ID of the deployment record.
@@ -42,7 +42,7 @@ export default {
     },
     /**
      * @param {string} operation - The name of the method to call
-     * @param {Object} requestParams - An object containing parameters for the method
+     * @param {Object} [requestParams] - An object containing parameters for the method
      * @param {Object} [options={}] - An object containing various options.
      * @param {string} [options.script] - The NetSuite ID of the script record.
      * @param {string} [options.deploy] - The NetSuite ID of the deployment record.
