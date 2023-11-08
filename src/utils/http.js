@@ -9,7 +9,7 @@ import store from "@/store";
  * @private
  */
 function _getURL(options) {
-    let currentUrl = parent['getCurrentNetSuiteUrl'] ? parent.getCurrentNetSuiteUrl() : window.location.href;
+    let currentUrl = top.location.href;
     let [baseUrl, queryString] = currentUrl.split('?');
     const params = new Proxy(new URLSearchParams(`?${queryString}`), {
         get: (searchParams, prop) => searchParams.get(prop),
