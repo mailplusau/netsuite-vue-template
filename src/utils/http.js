@@ -58,7 +58,21 @@ export default {
                 .send({operation, requestParams})
                 .end((err, res) => { _handle(err, res, reject, resolve, options?.noErrorPopup); });
         });
-    }
+    },
+    /**
+     * @param {string} url - The url of the endpoint
+     * @param {Object} [params] - The search queries for this GET call
+     * @param {Object} [options={}] - An object containing various options.
+     * @param {boolean} [options.noErrorPopup] - A flag that stops error from being displayed in a popup.
+     */
+    rawGet(url, params, options) {
+        return new Promise((resolve, reject) => {
+            superagent.get(url)
+                .set("Content-Type", "application/json")
+                .query(params)
+                .end((err, res) => { _handle(err, res, reject, resolve, options?.noErrorPopup); });
+        });
+    },
 }
 
 /**
