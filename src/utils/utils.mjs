@@ -15,6 +15,9 @@ export const rules = {
     minLength(value, fieldName = 'This field', length) {
         return (value && value.length >= length) || `${fieldName} must be more than ${length} characters`;
     },
+    minValue(value, fieldName = 'This field', min) {
+        return !value || parseFloat(value) >= parseFloat(min) || `${fieldName} must be greater than ${parseFloat(min)}`;
+    },
     abn(value, fieldName = 'This field') {
         if (!value) return true;
 
@@ -52,6 +55,11 @@ export const rules = {
 
         return true
     }
+}
+
+export function getWindowContext() {
+    if (window.location.href.includes('app.netsuite.com')) return window;
+    else return top;
 }
 
 export function allowOnlyNumericalInput(evt) {
