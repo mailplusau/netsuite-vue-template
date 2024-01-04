@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import modules from './modules';
-import {VARS} from '@/utils/utils.mjs';
+import {getWindowContext, VARS} from '@/utils/utils.mjs';
+import http from '@/utils/http';
 
 const baseURL = 'https://' + process.env.VUE_APP_NS_REALM + '.app.netsuite.com';
 
@@ -9,6 +10,8 @@ Vue.use(Vuex)
 
 const state = {
     pageTitle: VARS.pageTitle,
+
+    standaloneMode: false,
 
     globalModal: {
         open: false,
@@ -24,7 +27,8 @@ const state = {
 };
 
 const getters = {
-    globalModal : state => state.globalModal,
+    pageTitle: state => state.pageTitle,
+    globalModal: state => state.globalModal,
 };
 
 const mutations = {
@@ -83,12 +87,12 @@ const mutations = {
 
 const actions = {
     addShortcut : () => {
-        top.window['addShortcut']();
+        getWindowContext().window['addShortcut']();
     },
     init : async context => {
-        if (!top.location.href.includes(baseURL)) return;
+        if (!getWindowContext().location.href.includes(baseURL)) return;
 
-        console.log('Ready', context);
+        await _readUrlParams(context);
     },
     handleException : (context, {title, message}) => {
         context.commit('displayErrorGlobalModal', {
@@ -96,6 +100,17 @@ const actions = {
         })
     },
 };
+
+async function _readUrlParams(context) {
+    let currentUrl = getWindowContext().location.href;
+    let [, queryString] = currentUrl.split('?');
+
+    const params = new Proxy(new URLSearchParams(`?${queryString}`), {
+        get: (searchParams, prop) => searchParams.get(prop),
+    });
+
+    context.state.standaloneMode = !!params['standalone'];
+}
 
 const store = new Vuex.Store({
     state,

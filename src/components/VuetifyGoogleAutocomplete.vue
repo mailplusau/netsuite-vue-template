@@ -106,6 +106,7 @@ export default {
                 return;
             }
 
+            // eslint-disable-next-line no-undef
             let placeResult = new google.maps.places.PlacesService(document.getElementById("decoy"));
 
             placeResult.getDetails({placeId: newVal.id},

@@ -4,9 +4,7 @@
             <v-container fluid>
                 <v-row class="mx-1" justify="space-between" align="center">
                     <v-col cols="auto">
-                        <h1 class="primary--text">
-                            {{ pageTitle }}
-                        </h1>
+                        <h2 class="primary--text" v-html="pageTitle"></h2>
                     </v-col>
 
                     <v-col cols="auto">
@@ -17,9 +15,9 @@
 
             <v-divider class="mb-3"></v-divider>
 
-            <v-container>
+            <v-container fluid>
                 <v-row justify="center">
-                    <v-col xl="9" lg="11" cols="12">
+                    <v-col cols="12">
                         Contents
                     </v-col>
                 </v-row>
@@ -32,7 +30,6 @@
 </template>
 
 <script>
-import {VARS} from '@/utils/utils.mjs';
 import GlobalNotificationModal from "@/components/GlobalNotificationModal";
 
 export default {
@@ -48,7 +45,7 @@ export default {
             return (this.$vuetify.theme.dark) ? 'dark' : 'light'
         },
         pageTitle() {
-            return VARS.pageTitle;
+            return this.$store.getters['pageTitle'];
         }
     }
 };
